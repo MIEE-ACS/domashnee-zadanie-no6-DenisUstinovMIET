@@ -57,7 +57,7 @@ namespace DZ6
             }
             public virtual double square_of_triagle() 
             {
-                return Side1 * Side2;
+                return Side1 * Side2 * 0.5;
             }
         }
         // Равнобедренный треугольник
@@ -80,7 +80,7 @@ namespace DZ6
             public override double square_of_triagle()
             {
                 base.square_of_triagle();
-                return side1 * side2 * Math.Sin(angel)*0.5;
+                return side1 * side2 * Math.Sin(angel) * 0.5;
             }
         }
         // Равностороннний треугольник
@@ -131,7 +131,7 @@ namespace DZ6
             {
                 base.square_of_triagle();
                 if (angel == 90)
-                    return side1 * side2*0.5;
+                    return side1 * side2 * 0.5;
                 else
                     return side1 * side2 * Math.Sin(angel) * 0.5;
             }
