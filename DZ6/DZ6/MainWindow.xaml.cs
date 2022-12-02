@@ -47,7 +47,7 @@ namespace DZ6
             { 
                 get 
                 {
-                    return angel * Math.PI / 180;
+                    return angel;
                 } 
                 set { } 
             }            
@@ -73,14 +73,14 @@ namespace DZ6
             {
                 base.perimeter_of_triagle();
                 if (side1==side2)
-                    return side1 + side2 + Math.Sin( angel/2 )*side1;
+                    return side1 + side2 + Math.Sin( angel/2 )*side1*2;
                 else
                     return side1 + side2 + Math.Sqrt(Math.Pow(side1,2)+ Math.Pow(side2, 2) - 2 * side1 * side2 * Math.Cos(angel));
             }
             public override double square_of_triagle()
             {
                 base.square_of_triagle();
-                return side1 * side2 * Math.Sin(angel);
+                return side1 * side2 * Math.Sin(angel)*0.5;
             }
         }
         // Равностороннний треугольник
@@ -110,13 +110,14 @@ namespace DZ6
             {
                 side1 = sid1;
                 side2 = sid2;
-                angel = ang * Math.PI / 180;
+                angel = (ang * Math.PI) / 180;
             }
             public override double perimeter_of_triagle()
             {
                 base.perimeter_of_triagle();
-                if (angel == 90)
+                if (angel == Math.PI / 2)
                     return side1 + side2 + Math.Sqrt(side1 * side1 + side2 * side2);
+                
                 else 
                 {
                     if (side1 > side2)
@@ -130,9 +131,9 @@ namespace DZ6
             {
                 base.square_of_triagle();
                 if (angel == 90)
-                    return side1 * side2;
+                    return side1 * side2*0.5;
                 else
-                    return side1 * side2 * Math.Sin(angel);
+                    return side1 * side2 * Math.Sin(angel) * 0.5;
             }
         }
         public MainWindow()
@@ -143,17 +144,18 @@ namespace DZ6
         private void ___Button_Click(object sender, RoutedEventArgs e)
         {
             
-            if (tb_Side1.Text == "" || tb_Side1.Text == "0" || 
-                tb_Side2.Text == "" || tb_Side2.Text == "0" || 
-                tb_Angel.Text == "" || tb_Angel.Text == "0" ||
-                Convert.ToDouble(tb_Side1.Text) < 0 ||
-                Convert.ToDouble(tb_Side2.Text) < 0 ||
-                Convert.ToDouble(tb_Angel.Text) < 0 ||
-                double.TryParse(tb_Side1.Text, out double res1) == false ||
-                double.TryParse(tb_Side2.Text, out double res2) == false ||
-                double.TryParse(tb_Angel.Text, out double res3) == false)
+            if ((double.TryParse(tb_Side1.Text, out double res1) == false) ||
+                (double.TryParse(tb_Side2.Text, out double res2) == false) ||
+                (double.TryParse(tb_Angel.Text, out double res3) == false) ||
+                (tb_Side1.Text == "") || (tb_Side1.Text == "0") ||
+                (tb_Side2.Text == "") || (tb_Side2.Text == "0") ||
+                (tb_Angel.Text == "") || (tb_Angel.Text == "0") ||
+                (Convert.ToDouble(tb_Side1.Text) < 0) ||
+                (Convert.ToDouble(tb_Side2.Text) < 0) ||
+                (Convert.ToDouble(tb_Angel.Text) < 0) ||
+                (Convert.ToDouble(tb_Angel.Text) > 180)  )
             {
-                MessageBox.Show("Введите параметры");
+                MessageBox.Show("Введите корректные параметры");
             }
             else
             {
@@ -178,7 +180,7 @@ namespace DZ6
                         Equilateral equilateral = new Equilateral(Convert.ToDouble(tb_Side1.Text), Convert.ToDouble(tb_Side2.Text), Convert.ToDouble(tb_Angel.Text));
                         per = equilateral.perimeter_of_triagle();
                         squ = equilateral.square_of_triagle();
-                        if (tb_Side1.Text == tb_Side2.Text && double.Parse(tb_Angel.Text) == 60)
+                        if (tb_Side1.Text == tb_Side2.Text && double.Parse(tb_Angel.Text) == 60 && per > 0 && squ > 0)
                         {
                             tb_Perimeter.Text = Convert.ToString(per);
                             tb_Square.Text = Convert.ToString(squ);
@@ -190,7 +192,7 @@ namespace DZ6
                         Right right = new Right(Convert.ToDouble(tb_Side1.Text), Convert.ToDouble(tb_Side2.Text), Convert.ToDouble(tb_Angel.Text));
                         per = right.perimeter_of_triagle();
                         squ = right.square_of_triagle();
-                        if (Convert.ToDouble(tb_Angel.Text) <= 90)
+                        if (Convert.ToDouble(tb_Angel.Text) <= 90 && per > 0 && squ > 0)
                         {
                             tb_Perimeter.Text = Convert.ToString(per);
                             tb_Square.Text = Convert.ToString(squ);
